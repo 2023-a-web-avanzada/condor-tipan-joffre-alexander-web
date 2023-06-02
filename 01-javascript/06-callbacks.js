@@ -10,14 +10,14 @@ fs.readFile(
     'utf-8', //codificacion
     (errorLecturaPrimerArchivo, contenidoPrimerArchivo) => {
         console.log('SEGUNDO')
-        if(errorLecturaPrimerArchivo){
+        if (errorLecturaPrimerArchivo) {
             console.error(errorLecturaPrimerArchivo)
             throw new Error('Error leyendo primer archivo')
-        }else{
+        } else {
             fs.readFile(
                 './01-variables.js', // Nombre o path del archivo
                 'utf-8', // codificacion
-                (errorLecturaSegundoArchivo, contenidoSegundoArchivo)=>{
+                (errorLecturaSegundoArchivo, contenidoSegundoArchivo) => {
                 }
             )
         }
@@ -61,7 +61,7 @@ fs.readFile(
                             (errorEscritura) => {
                                 if (errorEscritura) {
                                     console.error('Error al escribir')
-                                }else{
+                                } else {
                                     console.log("Escritura exitosa del archivo 06-nuevo-archivo.txt")
                                 }
                             }
@@ -71,4 +71,4 @@ fs.readFile(
             )
         }
     }
-    )
+)
