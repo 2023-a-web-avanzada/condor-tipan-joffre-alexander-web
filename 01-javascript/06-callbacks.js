@@ -32,9 +32,8 @@ console.log('TERCERO');
 // luego imprimir en consola
 // 2) Despues del paso 1, Leer archivo:01-variables.js
 // , luego imprimir en consola
-// 3) Crear un nuevo archivo llamaddo 06-nuevo-archivo.txt
+// 3) Crear un nuevo archivo llamado 06-nuevo-archivo.txt
 // con el contenido de los otros dos archivos.
-
 
 fs.readFile(
     './06-ejemplo.txt', // Nombre o path del archivo
@@ -72,3 +71,4 @@ fs.readFile(
         }
     }
 )
+
