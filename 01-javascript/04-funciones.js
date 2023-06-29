@@ -42,7 +42,7 @@ const funcionFatArrow6 = (parametro) =>parametro + 1; // Una sola linea, Omitio 
 const funcionFatArrow7 = parametro => parametro + 1; // SOLO si tenemos 1 parametro Omitimos parentesis
 const fucnionFatArrow8 = (numUno, numDos, numTres) => numUno + numDos+ numTres;
 
-// ... => parametros infinitop => Llegan en unarreglo de parametros
+// ... => parametros infinito => Llegan en un arreglo de parametros
 //  solo podemos tener un parametro infinito por funcion
 //function sumarNumerops(a,b,c,s,w,  ....todosNumeros) OK
 //function sumarNumeros( ...todosNumeros,a,b,c,s,w) BAD
