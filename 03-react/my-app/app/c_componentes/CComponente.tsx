@@ -43,7 +43,6 @@ export default function CComponente(
             <p>Mostrar: {mostrar}</p>
             {contenidoAdicional()}
             {mostrar && <p>Mostrar rapido</p>}
-
             <button className="border border-solid border-black bg-blue-500" onClick={
                 (event) => {
                     console.log(event);
