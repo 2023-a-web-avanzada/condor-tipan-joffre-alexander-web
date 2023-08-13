@@ -13,6 +13,8 @@ export default function C_menuComponent(){
                 <li><a href={"/g_ejemplo_criptomoneda"}>G Ejemplo Criptomoneda</a> </li>
                 <li><a href={"/h_mui_konsta"}>H Mui Konsta</a> </li>
                 <li><a href={"/i_react_hook_form"}>I React Forms</a> </li>
+                <li><a href={"/j_ruta/[idUsuario]"}>J Ruta</a> </li>
+                <li><a href={"/k_websockets"}>K websockets</a> </li>
             </ul>
         </>
     )
