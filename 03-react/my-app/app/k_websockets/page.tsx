@@ -1,224 +1,237 @@
 'use client'
 import io from "socket.io-client"
-import {useEffect, useState} from "react";
 import {MensajeChatProps, Posicion} from "@/app/k_websockets/types/mensaje-chat-props";
+import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import MensajeChat from "@/app/k_websockets/components/MensajeChat";
 import {FormularioModelo} from "@/app/k_websockets/types/formulario-modelo";
+import {Formulario} from "@/app/k_websockets/types/formulario";
+import {SubastaProps} from "@/app/k_websockets/types/subasta-props";
+import Subasta from "@/app/k_websockets/components/Subasta";
 
 const servidorWebsocket = 'http://localhost:11202';
 const socket = io(servidorWebsocket);
 
-export default function Page(){
+export default function Page() {
     const [isConnected, setIsConnected] = useState(socket.connected)
-    const [mensajes, setMensajes] = useState([] as MensajeChatProps[]);
+    const [subasta, setSubasta] = useState([] as SubastaProps[]);
+    const [pintura1, setPintura1] = useState({
+        producto: "img1.png",
+        descripcion: "Pintura La noche estrellada de Van Gogh",
+        valor: "4000"
+    });
+
+    const [pintura2, setPintura2] = useState({
+        producto: "img2.png",
+        descripcion: "Pintura La noche estrellada de Van Gogh",
+        valor: "2000"
+    });
+
+    const [pintura3, setPintura3] = useState({
+        producto: "img1.png",
+        descripcion: "Pintura La noche estrellada de Van Gogh",
+        valor: "1000"
+    });
+
     const {control, register, handleSubmit, formState: {errors, isValid}} = useForm({
-        defaultValues:{
-            salaId: '',
-            nombre: '',
-            mensaje: '',
+        defaultValues: {
+            objetoSubastado: '',
+            user: '',
+            valor: '',
         },
         mode: 'all'
     })
+
     useEffect(
-        ()=>{
+        () => {
             socket.on('connect', () => {
                 setIsConnected(true);
-                console.log('Si esta conectado')
+                console.log('Si esta conectado');
             });
             socket.on('disconnect', () => {
                 setIsConnected(false);
-                console.log('No esta conectado')
+                console.log('No esta conectado');
             });
-            socket.on('escucharEventoHola', (data: { mensaje: string }) => {
-                console.log('escucharEventoHola', data);
-                const nuevoMensaje: MensajeChatProps = {
-                    mensaje: data.mensaje,
-                    nombre: 'Sistema',
-                    posicion: Posicion.I
-                };
-                setMensajes((mensajesAnteriores) => [
-                    ...mensajesAnteriores,
-                    nuevoMensaje]
-                );
+            socket.on('escucharEventoUnirseSala', (data: {objetoSubastado: string, user:string}) => {
+                console.log(data.user)
             });
-            socket.on('escucharEventoUnirseSala', (data: { mensaje: string }) => {
-                const nuevoMensaje: MensajeChatProps ={
-                    mensaje: data.mensaje,
-                    nombre: 'Sistema',
-                    posicion: Posicion.I
-                };
-                setMensajes((mensajesAnteriores) => [...mensajesAnteriores, nuevoMensaje]);
+            socket.on('escucharEventoPujaSala', (data: { objetoSubastado: string, user: string, valor: string}) => {
+                console.log(data.valor)
+                console.log(data.objetoSubastado, "es", data.valor," ", pintura1.valor)
+                console.log("aassa",pintura1.valor)
+                if(data.objetoSubastado == "img1.png"){
+                    if (Number(data.valor) > Number(pintura1.valor)) {
+                        pintura1.valor = data.valor
+                        setSubasta([pintura1]);
+                        console.log("aassa",pintura1.valor)
+                    }
+                }else if(data.objetoSubastado == "img2.png"){
+                    if (Number(data.valor) > Number(pintura2.valor)) {
+                        pintura2.valor = data.valor
+                        setSubasta([pintura2]);
+                    }
+                }else if(data.objetoSubastado == "img3.png"){
+                    if (Number(data.valor) > Number(pintura2.valor)) {
+                        pintura2.valor = data.valor
+                        setSubasta([pintura2]);
+                    }
+                }
+            });
+            socket.on('escucharCambioValor', (data: { objetoSubastado: string, user: string, valor: string}) => {
+                    if(data.objetoSubastado == "img1.png"){
+                        if (Number(data.valor) > Number(pintura1.valor)) {
+                            pintura1.valor = data.valor
+                        }
+                    }else if(data.objetoSubastado == "img2.png"){
+                        if (Number(data.valor) > Number(pintura2.valor)) {
+                            pintura2.valor = data.valor
+                        }
+                    }else if(data.objetoSubastado == "img3.png"){
+                        if (Number(data.valor) > Number(pintura2.valor)) {
+                            pintura2.valor = data.valor
+                        }
+                    }
                 }
             );
-            socket.on('escucharEventoMensajeSala', (data: FormularioModelo) => {
-                const nuevoMensaje: MensajeChatProps = {
-                    mensaje: data.salaId + ' - ' + data.mensaje,
-                    nombre: data.nombre,
-                    posicion: Posicion.I
-                };
-                setMensajes((mensajesAnteriores) => [...mensajesAnteriores, nuevoMensaje]);
-                console.log('escucharEventoMensajeSala');
-            })
         },
         []
     )
-
-    const enviarEventoHola = () => {
-        const mensaje = {mensaje: 'Adrian'}
-        socket.emit(
-            'hola',
-            mensaje,
-            (datosEventoHola: {mensaje: string;}) => {
-                console.log(datosEventoHola)
-                const nuevoMensaje: MensajeChatProps ={
-                    ...mensaje,
-                    nombre:'Adrian',
-                    posicion: Posicion.D
-                };
-                setMensajes(
-                    (mensajesAnteriores) => [
-                        ...mensajesAnteriores,
-                            nuevoMensaje
-                    ]
-                );
-            }
-        )
-    }
-
-    const estaConectado = ()=>{
-        if(isConnected){
+    const estaConectado = () => {
+        if (isConnected) {
             return <span>Conectado :)</span>
-        }else{
+        } else {
             return <span>Desconectado :(</span>
         }
     }
-
-    const unirseSalaOEnviarMensajeSala = (data: FormularioModelo) => {
-        if (data.mensaje === ''){
-            // unirnos a la sala
+    const unirseSalaOEnviarMensajeASala = (data: Formulario) => {
+        if (data.valor === "0") {
+            // unimos a la sala
             const dataEventoUnirseSala = {
-                salaId: data.salaId,
-                nombre: data.nombre,
+                objetoSubastado: data.objetoSubastado,
+                user: data.user.toString(),
             };
             socket.emit(
-                'unirseSala', // Nombre evento
-                dataEventoUnirseSala, // Datos evento
-                () => { // callback o respuesta del evento
-                    const nuevoMensaje: MensajeChatProps = {
-                        mensaje: 'Bienvenido a la sala ' + dataEventoUnirseSala.salaId,
-                        nombre: 'Sistema',
-                        posicion: Posicion.I
-                    };
-                    setMensajes((mensajesAnteriores) => [...mensajesAnteriores, nuevoMensaje]);
+                'unirseSala', // Nombre Evento
+                dataEventoUnirseSala, //  Datos evento
+                () => { // Callback o respuesta del evefnto
+                    console.log('Escuchando evento UnirseSala:', data.objetoSubastado, socket.id);
+                    if(data.objetoSubastado == "img1.png"){
+                        setSubasta([pintura1])
+                    }else if(data.objetoSubastado == "img2.png"){
+                        setSubasta([pintura2])
+                    }else if(data.objetoSubastado == "img3.png"){
+                        setSubasta([pintura3])
+                    }
                 }
             );
-        }else{
-            // mandamos mensaje
+        } else {
+
             const dataEventoEnviarMensajeSala = {
-                salaId: data.salaId,
-                nombre: data.nombre,
-                mensaje: data.mensaje
+                objetoSubastado: data.objetoSubastado,
+                user: data.user,
+                valor: data.valor
             };
             socket.emit(
-                'enviarMensaje', // Nombre Evento
-                dataEventoEnviarMensajeSala, // Datos evento
-                () => { // callback o respuesta del evento
-                    const nuevoMensaje: MensajeChatProps = {
-                        mensaje: data.salaId + ' - ' + data.mensaje,
-                        nombre: data.nombre,
-                        posicion: Posicion.D
-                    };
-                    setMensajes((mensajesAnteriores) => [...mensajesAnteriores]);
-
+                'enviarPuja', // Nombre Evento
+                dataEventoEnviarMensajeSala, //  Datos evento
+                () => { // Callback o respuesta del evefnto
+                    if(data.objetoSubastado == "img1.png"){
+                        if (Number(data.valor) > Number(pintura1.valor)) {
+                            pintura1.valor = data.valor
+                            setSubasta([pintura1]);
+                        }
+                    }else if(data.objetoSubastado == "img2.png"){
+                        if (Number(data.valor) > Number(pintura2.valor)) {
+                            pintura2.valor = data.valor
+                            setSubasta([pintura2]);
+                        }
+                    }else if(data.objetoSubastado == "img3.png"){
+                        if (Number(data.valor) > Number(pintura3.valor)) {
+                            pintura3.valor = data.valor
+                            setSubasta([pintura3]);
+                        }
+                    }
                 }
             );
         }
     }
-    return <>
-        <h1>Websockets</h1>
-        <p><strong>{estaConectado()}</strong></p>
-        <button className={'btn btn-success'}
-                onClick={()=> enviarEventoHola()}
-        >
-            Enviar Evento Hola
-        </button>
-        <div className="row">
-            <div className="col-sm-6">
-                <form onSubmit={handleSubmit(unirseSalaOEnviarMensajeSala)}
-                      className="m-2 p-4 border-2 border-pink-500">
-                    <div className="mb-3">
-                        <label htmlFor="salaId" className="form-label">Sala ID</label>
-                        <input type="text"
-                               className="form-control"
-                               placeholder="EJ: 1254"
-                               id="salaId"
-                            {...register('salaId',{required: 'Ingresar salaId'})}
-                            aria-describedby="salaIdHelp"/>
-                        <div id="salaIdHelp" className="form-text">
-                            Ingresa tu idSala
-                        </div>
-                        {errors.salaId &&
-                        <div className="alert alert-warning" role="alert">
-                        Tiene errores {errors.salaId.message}
-                        </div>
-                        }
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="nombre" className="form-label">Nombre</label>
-                        <input type="text"
-                               className="form-control"
-                               placeholder="EJ: Adrian"
-                               id="nombre"
-                               {...register('nombre',{required: 'Nombre requerido'})}
-                               aria-describedby="nombreHelp"/>
-                        <div id="nombreHelp" className="form-text">
-                            Ingresa tu nombre
-                        </div>
-                        {errors.nombre &&
-                            <div className="alert alert-warning" role="alert">
-                                Tiene errores {errors.nombre.message}
+
+    return (
+        <>
+            <div className="flex">
+                <div className="flex">
+                    <form onSubmit={handleSubmit(unirseSalaOEnviarMensajeASala)}
+                          className="m-2 p-4 border-2 border-pink-500">
+                        <div className="mb-3">
+                            <label htmlFor="objetoSubastado" className="form-label">Objeto</label>
+                            <select
+                                className="form-control"
+                                id="objetoSubastado"
+                                {...register('objetoSubastado', {required: 'Seleccionar objeto'})}
+                                aria-describedby="salaObjetoHelp">
+                                <option value="">Seleccionar...</option>
+                                <option value="img1.png">Opción 1</option>
+                                <option value="img2.png">Opción 2</option>
+                                <option value="3">Opción 3</option>
+                            </select>
+                            <div id="salaObjetoHelp" className="form-text">
+                                Selecciona un objeto
                             </div>
-                        }
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="mensaje" className="form-label">Mensaje</label>
-                        <input type="text"
-                               className="form-control"
-                               placeholder="EJ: Mensaje"
-                               id="nombre"
-                               {...register('mensaje')}
-                               aria-describedby="mensajeHelp"/>
-                        <div id="mensajeHelp" className="form-text">
-                            Ingresa tu mensaje
-                        </div>
-                        {errors.mensaje &&
-                            <div className="alert alert-warning" role="alert">
-                                Tiene errores {errors.mensaje.message}
+                            {errors.objetoSubastado &&
+                                <div className="alert alert-warning" role="alert">
+                                    Tiene errores {errors.objetoSubastado.message}
+                                </div>
+                            }
+                            <label htmlFor="valor" className="form-label">Valor de oferta</label>
+                            <input type="number"
+                                   className="form-control"
+                                   placeholder="EJ: 2000"
+                                   id="valor"
+                                   {...register('valor', {required: 'Valor de oferta requerido'})}
+                                   aria-describedby="valorHelp"/>
+                            <div id="valorHelp" className="form-text">
+                                Ingresa el valor de tu oferta
                             </div>
-                        }
-                    </div>
-                    <button type="submit"
-                            disabled={!isValid}
-                            className="btn btn-warning">
-                        Unirse sala
-                    </button>
-                    <button type="reset"
-                            className="btn btn-danger">
-                        Reset
-                    </button>
-                </form>
-                <div className="col-sm-6">
-                <div className="border-2 border-sky-500 p-4 m-2">
-                    {mensajes.map((mensaje, indice) =>
-                    <MensajeChat key={indice}
-                                 mensaje={mensaje.mensaje}
-                                 nombre={mensaje.nombre}
-                                 posicion={mensaje.posicion}
-                    />)}
+                            {errors.valor &&
+                                <div className="alert alert-warning" role="alert">
+                                    Tiene errores {errors.valor.message}
+                                </div>
+                            }
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="user" className="form-label">Usuario</label>
+                            <input type="text"
+                                   className="form-control"
+                                   placeholder="EJ: Adrian"
+                                   id="user"
+                                   {...register('user', {required: 'Usuario requerido'})}
+                                   aria-describedby="usuarioHelp"/>
+                            <div id="usuarioHelp" className="form-text">
+                                Ingresa tu usuario
+                            </div>
+                            {errors.user &&
+                                <div className="alert alert-warning" role="alert">
+                                    Tiene errores {errors.user.message}
+                                </div>
+                            }
+                        </div>
+                        <button type="submit"
+                                disabled={!isValid}
+                                className="bg-blue-500">
+                            Unirse sala
+                        </button>
+                    </form>
                 </div>
+                <div>
+                    {subasta.map((subasta, indice)=>
+                        <Subasta key={indice}
+                                 imagen={subasta.producto}
+                                 descripcion={subasta.descripcion}
+                                 valor={subasta.valor}
+                        />
+                    )}
                 </div>
             </div>
-        </div>
-    </>
+        </>
+    )
 }

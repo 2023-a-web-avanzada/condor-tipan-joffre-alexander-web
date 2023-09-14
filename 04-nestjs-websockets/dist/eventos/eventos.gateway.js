@@ -46,7 +46,7 @@ let EventosGateway = exports.EventosGateway = class EventosGateway {
         };
         socket.broadcast
             .to(message.salaId)
-            .emit('escucharEventomensajeSala', mensajeSala);
+            .emit('escucharEventoMensajeSala', mensajeSala);
         return { mensaje: 'ok' };
     }
 };

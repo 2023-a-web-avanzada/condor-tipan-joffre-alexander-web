@@ -3,7 +3,8 @@ import {MensajeChatProps, Posicion} from "@/app/k_websockets/types/mensaje-chat-
 
 export default function MensajeChat(props, MensajeChatProps){
     const {nombre, mensaje, posicion} = props
-    return (<>
+    return (
+        <>
         {
             posicion === Posicion.D ?
                 <p className='text-right'>
@@ -13,5 +14,6 @@ export default function MensajeChat(props, MensajeChatProps){
                     <strong>{nombre}:</strong>{mensaje}
                 </p>
         }
-    </>)
+    </>
+    )
 }
