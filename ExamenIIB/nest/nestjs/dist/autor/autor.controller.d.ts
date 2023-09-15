@@ -1,11 +1,13 @@
+import { DeleteResult, UpdateResult } from "typeorm";
 import { AutorService } from "./autor.service";
+import { AutorDTO } from "./dto/autor.dto";
 import { AutorEntity } from "./autor.entity";
 export declare class AutorController {
-    private readonly usuarioService;
-    constructor(usuarioService: AutorService);
-    findOneById(params: any): Promise<AutorEntity>;
-    delete(params: any): Promise<import("typeorm").DeleteResult>;
-    create(bodyParams: any): Promise<import("typeorm").DeepPartial<AutorEntity> & AutorEntity>;
-    update(params: any, bodyParams: any): Promise<import("typeorm").DeepPartial<AutorEntity> & AutorEntity>;
-    find(queryParams: any): Promise<AutorEntity[]>;
+    private readonly autorService;
+    constructor(autorService: AutorService);
+    create(autor: AutorDTO): Promise<AutorDTO & AutorEntity>;
+    find(): Promise<AutorEntity[]>;
+    findOneById(id: number): Promise<AutorEntity>;
+    update(id: number, autor: AutorDTO): Promise<UpdateResult>;
+    delete(id: number): Promise<DeleteResult>;
 }

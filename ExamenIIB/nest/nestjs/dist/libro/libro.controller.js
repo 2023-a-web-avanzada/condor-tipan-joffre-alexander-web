@@ -14,121 +14,67 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LibroController = void 0;
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("typeorm");
 const libro_service_1 = require("./libro.service");
-const libro_create_dto_1 = require("./dto/libro-create.dto");
-const class_validator_1 = require("class-validator");
-const libro_update_dto_1 = require("./dto/libro-update.dto");
+const libro_dto_1 = require("./dto/libro.dto");
 let LibroController = class LibroController {
-    constructor(usuarioService) {
-        this.usuarioService = usuarioService;
+    constructor(libroService) {
+        this.libroService = libroService;
     }
-    findOneById(params) {
-        return this.usuarioService.findOneById(+params.id);
+    create(libro) {
+        return this.libroService.create(libro);
     }
-    delete(params) {
-        return this.usuarioService.delete(+params.id);
+    find(autorId) {
+        return this.libroService.find(autorId);
     }
-    async create(bodyParams) {
-        const nuevoRegistro = new libro_create_dto_1.UsuarioCreateDto();
-        nuevoRegistro.titulo = bodyParams.titulo;
-        nuevoRegistro.numeroPaginas = bodyParams.numeroPaginas;
-        nuevoRegistro.fechaPublicacion = bodyParams.fechaPublicacion;
-        nuevoRegistro.editorial = bodyParams.editorial;
-        nuevoRegistro.genero = bodyParams.genero;
-        const arregloErrores = await (0, class_validator_1.validate)(nuevoRegistro);
-        if (arregloErrores.length > 0) {
-            console.error({ arregloErrores });
-            throw new common_1.BadRequestException({
-                mensaje: 'Envio mal datos'
-            });
-        }
-        return this.usuarioService.create(nuevoRegistro);
+    findById(id) {
+        return this.libroService.findOneById(id);
     }
-    async update(params, bodyParams) {
-        const nuevoRegistro = new libro_update_dto_1.LibroUpdateDto();
-        nuevoRegistro.titulo = bodyParams.titulo;
-        nuevoRegistro.numeroPaginas = bodyParams.numeroPaginas;
-        nuevoRegistro.fechaPublicacion = bodyParams.fechaPublicacion;
-        nuevoRegistro.editorial = bodyParams.editorial;
-        nuevoRegistro.genero = bodyParams.genero;
-        const arregloErrores = await (0, class_validator_1.validate)(nuevoRegistro);
-        if (arregloErrores.length > 0) {
-            console.error({ arregloErrores });
-            throw new common_1.BadRequestException({
-                mensaje: 'Envio mal datos'
-            });
-        }
-        return this.usuarioService.update(bodyParams, +params.id);
+    update(id, libro) {
+        return this.libroService.update(id, libro);
     }
-    find(queryParams) {
-        const consulta = {
-            relations: ['autor'],
-            where: {},
-            skip: queryParams.skip ? +queryParams.skip : 0,
-            take: queryParams.take ? +queryParams.take : 10
-        };
-        const consultaWhere = [];
-        if (queryParams.titulo) {
-            consultaWhere.push({
-                titulo: (0, typeorm_1.Like)('%' + queryParams.titulo + '%')
-            });
-        }
-        if (queryParams.apellidos) {
-            consultaWhere.push({
-                numeroPaginas: (0, typeorm_1.Like)('%' + queryParams.apellidos + '%')
-            });
-        }
-        if (consultaWhere.length > 0) {
-            consulta.where = consultaWhere;
-        }
-        return this.usuarioService.find(consulta);
+    delete(id) {
+        return this.libroService.delete(id);
     }
 };
 exports.LibroController = LibroController;
 __decorate([
-    (0, common_1.Get)("/:id"),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Param)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], LibroController.prototype, "findOneById", null);
-__decorate([
-    (0, common_1.Delete)("/:id"),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Param)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], LibroController.prototype, "delete", null);
-__decorate([
-    (0, common_1.Post)("/"),
-    (0, common_1.HttpCode)(201),
+    (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [libro_dto_1.LibroDTO]),
     __metadata("design:returntype", Promise)
 ], LibroController.prototype, "create", null);
 __decorate([
-    (0, common_1.Put)("/:id"),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Param)()),
+    (0, common_1.Get)('by-autor/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], LibroController.prototype, "find", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], LibroController.prototype, "findById", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Number, libro_dto_1.LibroDTO]),
     __metadata("design:returntype", Promise)
 ], LibroController.prototype, "update", null);
 __decorate([
-    (0, common_1.Get)("/"),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Query)()),
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], LibroController.prototype, "find", null);
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], LibroController.prototype, "delete", null);
 exports.LibroController = LibroController = __decorate([
-    (0, common_1.Controller)('libro'),
+    (0, common_1.Controller)('libros'),
     __metadata("design:paramtypes", [libro_service_1.LibroService])
 ], LibroController);
 //# sourceMappingURL=libro.controller.js.map

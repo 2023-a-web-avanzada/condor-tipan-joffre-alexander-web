@@ -1,18 +1,11 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm"
-import {AutorEntity} from "../autor/autor.entity";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm"
+
 @Entity('libro') // nombre tabla en la bdd
 export class LibroEntity {
 // id autogenerado
     @PrimaryGeneratedColumn()
     id: number;
 
-    /*
-    * titulo
-    numeroPaginas
-    fechaPublicacion
-    editorial
-    genero
-    * */
     @Column({
         name: 'titulo', // nombre campo bdd
         type: 'varchar', // tipo campo bdd
@@ -26,7 +19,7 @@ export class LibroEntity {
         type: 'int', // tipo campo bdd
         nullable: false, // Si es nullable
     })
-    numeroPaginas: string; // nombre campo
+    numeroPaginas: number; // nombre campo
 
     @Column({
         name: 'fecha_publicacion', // nombre campo bdd

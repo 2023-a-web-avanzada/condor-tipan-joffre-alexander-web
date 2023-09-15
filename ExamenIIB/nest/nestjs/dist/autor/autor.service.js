@@ -35,8 +35,8 @@ let AutorService = class AutorService {
     create(datosCrear) {
         return this.autorRepository.save(datosCrear);
     }
-    update(datosActualizar, id) {
-        return this.autorRepository.save({ ...datosActualizar, id });
+    update(id, datosActualizar) {
+        return this.autorRepository.update(id, datosActualizar);
     }
     delete(id) {
         return this.autorRepository.delete(id);

@@ -1,5 +1,4 @@
-export declare class AutorEntity {
-    id: number;
+export declare class AutorDTO {
     nombre: string;
     fechaNacimiento: Date;
     activo: boolean;

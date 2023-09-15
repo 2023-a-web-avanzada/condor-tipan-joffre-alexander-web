@@ -22,21 +22,25 @@ let LibroService = class LibroService {
         this.datasource = datasource;
         this.libroRepository = this.datasource.getRepository(libro_entity_1.LibroEntity);
     }
-    find(opciones) {
-        return this.libroRepository.find(opciones);
+    create(datosCrear) {
+        return this.libroRepository.save(datosCrear);
+    }
+    find(autorId) {
+        return this.libroRepository.find({
+            where: {
+                autor: autorId,
+            }
+        });
     }
     findOneById(id) {
         return this.libroRepository.findOne({
             where: {
-                id: id
-            },
+                id: id,
+            }
         });
     }
-    create(datosCrear) {
-        return this.libroRepository.save(datosCrear);
-    }
-    update(datosActualizar, id) {
-        return this.libroRepository.save({ ...datosActualizar, id });
+    update(id, libro) {
+        return this.libroRepository.update(id, libro);
     }
     delete(id) {
         return this.libroRepository.delete(id);

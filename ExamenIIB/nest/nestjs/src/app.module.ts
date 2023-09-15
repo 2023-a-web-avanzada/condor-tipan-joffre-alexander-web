@@ -3,8 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {AutorEntity} from "./autor/autor.entity";
-import {LibroEntity} from "./libro/libro.entity";
 import {AutorModule} from "./autor/autor.module";
+import {LibroEntity} from "./libro/libro.entity";
 import {LibroModule} from "./libro/libro.module";
 
 

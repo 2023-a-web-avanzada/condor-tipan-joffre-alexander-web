@@ -9,29 +9,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutorCreateDto = void 0;
+exports.LibroDTO = void 0;
 const class_validator_1 = require("class-validator");
-class AutorCreateDto {
+class LibroDTO {
 }
-exports.AutorCreateDto = AutorCreateDto;
+exports.LibroDTO = LibroDTO;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], AutorCreateDto.prototype, "nombres", void 0);
+], LibroDTO.prototype, "titulo", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
-], AutorCreateDto.prototype, "numeroLibros", void 0);
+], LibroDTO.prototype, "numeroPaginas", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsDate)(),
     __metadata("design:type", Date)
-], AutorCreateDto.prototype, "fechaNacimiento", void 0);
+], LibroDTO.prototype, "fechaPublicacion", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsBoolean)(),
-    __metadata("design:type", Boolean)
-], AutorCreateDto.prototype, "activo", void 0);
-//# sourceMappingURL=autor-create.dto.js.map
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], LibroDTO.prototype, "editorial", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], LibroDTO.prototype, "genero", void 0);
+//# sourceMappingURL=libro.dto.js.map

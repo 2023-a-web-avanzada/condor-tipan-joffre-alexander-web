@@ -1,12 +1,13 @@
-import { DataSource, DeepPartial, DeleteResult, FindManyOptions } from "typeorm";
+import { DataSource, DeleteResult, UpdateResult } from "typeorm";
 import { LibroEntity } from "./libro.entity";
+import { LibroDTO } from "./dto/libro.dto";
 export declare class LibroService {
     datasource: DataSource;
     constructor(datasource: DataSource);
     libroRepository: import("typeorm").Repository<LibroEntity>;
-    find(opciones: FindManyOptions<LibroEntity>): Promise<LibroEntity[]>;
+    create(datosCrear: any): Promise<LibroDTO & LibroEntity>;
+    find(autorId: number): Promise<LibroEntity[]>;
     findOneById(id: number): Promise<LibroEntity>;
-    create(datosCrear: any): Promise<(DeepPartial<LibroEntity> & LibroEntity)>;
-    update(datosActualizar: any, id: number): Promise<(DeepPartial<LibroEntity> & LibroEntity)>;
+    update(id: number, libro: LibroDTO): Promise<UpdateResult>;
     delete(id: number): Promise<DeleteResult>;
 }

@@ -14,115 +14,68 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutorController = void 0;
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("typeorm");
 const autor_service_1 = require("./autor.service");
-const autor_create_dto_1 = require("./dto/autor-create.dto");
-const class_validator_1 = require("class-validator");
-const autor_update_dto_1 = require("./dto/autor-update.dto");
+const autor_dto_1 = require("./dto/autor.dto");
 let AutorController = class AutorController {
-    constructor(usuarioService) {
-        this.usuarioService = usuarioService;
+    constructor(autorService) {
+        this.autorService = autorService;
     }
-    findOneById(params) {
-        return this.usuarioService.findOneById(+params.id);
+    create(autor) {
+        console.log(autor.nombre);
+        return this.autorService.create(autor);
     }
-    delete(params) {
-        return this.usuarioService.delete(+params.id);
+    find() {
+        const options = {};
+        return this.autorService.find(options);
     }
-    async create(bodyParams) {
-        const nuevoRegistro = new autor_create_dto_1.AutorCreateDto();
-        nuevoRegistro.nombres = bodyParams.nombres;
-        nuevoRegistro.numeroLibros = bodyParams.numeroLibros;
-        nuevoRegistro.fechaNacimiento = bodyParams.fechaNacimiento;
-        nuevoRegistro.activo = bodyParams.activo;
-        const arregloErrores = await (0, class_validator_1.validate)(nuevoRegistro);
-        if (arregloErrores.length > 0) {
-            console.error({ arregloErrores });
-            throw new common_1.BadRequestException({
-                mensaje: 'Envio mal datos'
-            });
-        }
-        return this.usuarioService.create(nuevoRegistro);
+    findOneById(id) {
+        return this.autorService.findOneById(id);
     }
-    async update(params, bodyParams) {
-        const nuevoRegistro = new autor_update_dto_1.AutorUpdateDto();
-        nuevoRegistro.nombres = bodyParams.nombres;
-        nuevoRegistro.numeroLibros = bodyParams.numeroLibros;
-        nuevoRegistro.fechaNacimiento = bodyParams.fechaNacimiento;
-        nuevoRegistro.activo = bodyParams.activo;
-        const arregloErrores = await (0, class_validator_1.validate)(nuevoRegistro);
-        if (arregloErrores.length > 0) {
-            console.error({ arregloErrores });
-            throw new common_1.BadRequestException({
-                mensaje: 'Envio mal datos'
-            });
-        }
-        return this.usuarioService.update(bodyParams, +params.id);
+    update(id, autor) {
+        return this.autorService.update(id, autor);
     }
-    find(queryParams) {
-        const consulta = {
-            relations: ['libros'],
-            where: {},
-            skip: queryParams.skip ? +queryParams.skip : 0,
-            take: queryParams.take ? +queryParams.take : 10
-        };
-        const consultaWhere = [];
-        if (queryParams.nombres) {
-            consultaWhere.push({
-                nombres: (0, typeorm_1.Like)('%' + queryParams.nombres + '%'),
-                activo: queryParams.rol ? queryParams.rol : undefined
-            });
-        }
-        if (consultaWhere.length > 0) {
-            consulta.where = consultaWhere;
-        }
-        return this.usuarioService.find(consulta);
+    delete(id) {
+        return this.autorService.delete(id);
     }
 };
 exports.AutorController = AutorController;
 __decorate([
-    (0, common_1.Get)("/:id"),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Param)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AutorController.prototype, "findOneById", null);
-__decorate([
-    (0, common_1.Delete)("/:id"),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Param)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AutorController.prototype, "delete", null);
-__decorate([
-    (0, common_1.Post)("/"),
-    (0, common_1.HttpCode)(201),
+    (0, common_1.Post)("create"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [autor_dto_1.AutorDTO]),
     __metadata("design:returntype", Promise)
 ], AutorController.prototype, "create", null);
 __decorate([
-    (0, common_1.Put)("/:id"),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Param)()),
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AutorController.prototype, "find", null);
+__decorate([
+    (0, common_1.Get)("/:id"),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], AutorController.prototype, "findOneById", null);
+__decorate([
+    (0, common_1.Put)(":id"),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Number, autor_dto_1.AutorDTO]),
     __metadata("design:returntype", Promise)
 ], AutorController.prototype, "update", null);
 __decorate([
-    (0, common_1.Get)("/"),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Query)()),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AutorController.prototype, "find", null);
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], AutorController.prototype, "delete", null);
 exports.AutorController = AutorController = __decorate([
-    (0, common_1.Controller)('autor'),
+    (0, common_1.Controller)('autores'),
     __metadata("design:paramtypes", [autor_service_1.AutorService])
 ], AutorController);
 //# sourceMappingURL=autor.controller.js.map

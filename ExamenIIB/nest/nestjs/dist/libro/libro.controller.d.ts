@@ -1,11 +1,13 @@
-import { LibroService } from "./libro.service";
+import { DeleteResult, UpdateResult } from "typeorm";
 import { LibroEntity } from "./libro.entity";
+import { LibroService } from "./libro.service";
+import { LibroDTO } from "./dto/libro.dto";
 export declare class LibroController {
-    private readonly usuarioService;
-    constructor(usuarioService: LibroService);
-    findOneById(params: any): Promise<LibroEntity>;
-    delete(params: any): Promise<import("typeorm").DeleteResult>;
-    create(bodyParams: any): Promise<import("typeorm").DeepPartial<LibroEntity> & LibroEntity>;
-    update(params: any, bodyParams: any): Promise<import("typeorm").DeepPartial<LibroEntity> & LibroEntity>;
-    find(queryParams: any): Promise<LibroEntity[]>;
+    private readonly libroService;
+    constructor(libroService: LibroService);
+    create(libro: LibroDTO): Promise<LibroDTO & LibroEntity>;
+    find(autorId: number): Promise<LibroEntity[]>;
+    findById(id: number): Promise<LibroEntity>;
+    update(id: number, libro: LibroDTO): Promise<UpdateResult>;
+    delete(id: number): Promise<DeleteResult>;
 }

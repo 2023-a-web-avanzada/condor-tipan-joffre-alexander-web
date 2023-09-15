@@ -1,5 +1,4 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm"
-import {LibroEntity} from "../libro/libro.entity";
 @Entity('autor') // nombre tabla en la bdd
 export class AutorEntity {
 // id autogenerado
@@ -12,14 +11,7 @@ export class AutorEntity {
         length: 60, // longitud campo bdd
         nullable: false, // Si es nullable
     })
-    nombres: string; // nombre campo
-
-    @Column({
-        name: 'numero_libros', // nombre campo bdd
-        type: 'int', // tipo campo bdd
-        nullable: false, // Si es nullable
-    })
-    numeroLibros: number; // nombre campo
+    nombre: string; // nombre campo
 
     @Column({
         name: 'fecha_nacimiento', // nombre campo bdd

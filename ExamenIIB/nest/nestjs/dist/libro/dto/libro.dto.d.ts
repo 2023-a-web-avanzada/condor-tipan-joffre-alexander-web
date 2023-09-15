@@ -1,4 +1,4 @@
-export declare class UsuarioCreateDto {
+export declare class LibroDTO {
     titulo: string;
     numeroPaginas: number;
     fechaPublicacion: Date;

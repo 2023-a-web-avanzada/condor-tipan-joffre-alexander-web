@@ -11,10 +11,10 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
-const libro_entity_1 = require("../libro/libro.entity");
-const autor_entity_1 = require("../autor/autor.entity");
-const autor_module_1 = require("../autor/autor.module");
-const libro_module_1 = require("../libro/libro.module");
+const autor_entity_1 = require("./autor/autor.entity");
+const autor_module_1 = require("./autor/autor.module");
+const libro_entity_1 = require("./libro/libro.entity");
+const libro_module_1 = require("./libro/libro.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;

@@ -1,6 +1,6 @@
 export type AutorType = {
-    nombre: string;
-    numeroLibros: number;
-    fechaNacimiento: Date
+    id?: number,
+    nombre: string,
+    fechaNacimiento: Date,
     activo: boolean;
 }

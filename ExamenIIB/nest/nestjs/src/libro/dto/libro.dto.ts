@@ -1,6 +1,6 @@
-import {IsDate, IsIn, IsNotEmpty, IsNumber, IsString} from "class-validator";
+import {IsDate, IsNotEmpty, IsNumber, IsString} from "class-validator";
 
-export class UsuarioCreateDto{
+export class LibroDTO {
     @IsNotEmpty()
     @IsString()
     titulo: string;
@@ -11,7 +11,7 @@ export class UsuarioCreateDto{
 
     @IsNotEmpty()
     @IsDate()
-    fechaPublicacion: Date
+    fechaPublicacion: Date;
 
     @IsNotEmpty()
     @IsString()

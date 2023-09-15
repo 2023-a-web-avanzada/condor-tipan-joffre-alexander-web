@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LibroEntity = void 0;
 const typeorm_1 = require("typeorm");
-const autor_entity_1 = require("../autor/autor.entity");
 let LibroEntity = class LibroEntity {
 };
 exports.LibroEntity = LibroEntity;
@@ -34,7 +33,7 @@ __decorate([
         type: 'int',
         nullable: false,
     }),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], LibroEntity.prototype, "numeroPaginas", void 0);
 __decorate([
     (0, typeorm_1.Column)({
@@ -63,8 +62,12 @@ __decorate([
     __metadata("design:type", String)
 ], LibroEntity.prototype, "genero", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => autor_entity_1.AutorEntity, (autorInstancia) => autorInstancia.libros),
-    __metadata("design:type", autor_entity_1.AutorEntity)
+    (0, typeorm_1.Column)({
+        name: 'autor',
+        type: 'int',
+        nullable: false,
+    }),
+    __metadata("design:type", Number)
 ], LibroEntity.prototype, "autor", void 0);
 exports.LibroEntity = LibroEntity = __decorate([
     (0, typeorm_1.Entity)('libro')

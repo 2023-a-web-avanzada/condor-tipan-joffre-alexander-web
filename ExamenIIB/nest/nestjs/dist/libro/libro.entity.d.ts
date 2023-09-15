@@ -1,10 +1,9 @@
-import { AutorEntity } from "../autor/autor.entity";
 export declare class LibroEntity {
     id: number;
     titulo: string;
-    numeroPaginas: string;
+    numeroPaginas: number;
     fechaPublicacion: Date;
     editorial: string;
     genero: string;
-    autor: AutorEntity;
+    autor: number;
 }

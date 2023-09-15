@@ -9,29 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutorUpdateDto = void 0;
+exports.AutorDTO = void 0;
 const class_validator_1 = require("class-validator");
-class AutorUpdateDto {
+class AutorDTO {
 }
-exports.AutorUpdateDto = AutorUpdateDto;
+exports.AutorDTO = AutorDTO;
 __decorate([
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], AutorUpdateDto.prototype, "nombres", void 0);
+], AutorDTO.prototype, "nombre", void 0);
 __decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], AutorUpdateDto.prototype, "numeroLibros", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsDate)(),
     __metadata("design:type", Date)
-], AutorUpdateDto.prototype, "fechaNacimiento", void 0);
+], AutorDTO.prototype, "fechaNacimiento", void 0);
 __decorate([
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
-], AutorUpdateDto.prototype, "activo", void 0);
-//# sourceMappingURL=autor-update.dto.js.map
+], AutorDTO.prototype, "activo", void 0);
+//# sourceMappingURL=autor.dto.js.map
